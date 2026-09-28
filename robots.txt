@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://kurbada-motosupply.github.io/koor-BAH-dah/sitemap.xml
