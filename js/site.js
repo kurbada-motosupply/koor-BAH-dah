@@ -42,6 +42,45 @@
   });
   if (query) query.addEventListener("input", applyFilter);
 
+  var productQuery = document.querySelector("#product-q");
+  var productEmpty = document.querySelector("[data-product-empty]");
+  if (productQuery) {
+    productQuery.addEventListener("input", function () {
+      var term = productQuery.value.trim().toLowerCase();
+      if (term && chips.length) {
+        group = "all";
+        chips.forEach(function (item) {
+          item.classList.toggle("is-on", item.getAttribute("data-filter") === "all");
+        });
+        cards.forEach(function (card) { card.hidden = false; });
+      }
+      var shown = 0;
+      document.querySelectorAll(".product-stack").forEach(function (stack) {
+        var on = !term || stack.textContent.toLowerCase().indexOf(term) !== -1;
+        stack.hidden = !on;
+        if (on) shown += 1;
+      });
+      document.querySelectorAll("[data-cat]").forEach(function (section) {
+        if (!term) return;
+        var stacks = section.querySelectorAll(".product-stack");
+        if (!stacks.length) {
+          section.hidden = section.textContent.toLowerCase().indexOf(term) === -1;
+          return;
+        }
+        var any = false;
+        stacks.forEach(function (stack) { if (!stack.hidden) any = true; });
+        section.hidden = !any;
+      });
+      if (!term) applyFilter();
+      if (productEmpty) productEmpty.hidden = !term || shown !== 0;
+    });
+    var preset = new URLSearchParams(location.search).get("q");
+    if (preset) {
+      productQuery.value = preset;
+      productQuery.dispatchEvent(new Event("input"));
+    }
+  }
+
   var bikeButtons = document.querySelectorAll("[data-bike]");
   var fitItems = document.querySelectorAll("[data-fits]");
   var bikeTitle = document.querySelector("[data-bike-title]");
@@ -54,7 +93,8 @@
     "kawasaki-barako": 1, "kawasaki-ct": 1, "motorstar": 1, "rusi": 1, "skygo": 1,
     "honda-beat": 1, "honda-click": 1, "honda-airblade": 1, "honda-pcx": 1, "honda-adv": 1,
     "yamaha-mio": 1, "yamaha-aerox": 1, "yamaha-nmax": 1, "yamaha-xmax": 1,
-    "suzuki-burgman": 1, "suzuki-address": 1, "vespa": 1, "piaggio": 1, "sym": 1, "kymco": 1
+    "suzuki-burgman": 1, "suzuki-address": 1, "vespa": 1, "piaggio": 1, "sym": 1, "kymco": 1,
+    "fkm-venture": 1, "fkm-hunter": 1, "fkm-ranger": 1, "fkm-mtx": 1, "fkm-slick": 1, "fkm-fyro": 1
   };
 
   function showBike(id, label) {
