@@ -44,40 +44,58 @@
 
   var productQuery = document.querySelector("#product-q");
   var productEmpty = document.querySelector("[data-product-empty]");
-  if (productQuery) {
-    productQuery.addEventListener("input", function () {
-      var term = productQuery.value.trim().toLowerCase();
-      if (term && chips.length) {
-        group = "all";
-        chips.forEach(function (item) {
-          item.classList.toggle("is-on", item.getAttribute("data-filter") === "all");
-        });
-        cards.forEach(function (card) { card.hidden = false; });
+
+  function filterProducts() {
+    if (!productQuery) return;
+    var term = productQuery.value.trim().toLowerCase();
+    if (chips.length) {
+      group = "all";
+      chips.forEach(function (item) {
+        item.classList.toggle("is-on", item.getAttribute("data-filter") === "all");
+      });
+      cards.forEach(function (card) { card.hidden = false; card.classList.remove("is-hidden"); });
+    }
+    var shown = 0;
+    var first = null;
+    document.querySelectorAll(".product-stack").forEach(function (stack) {
+      var on = !term || stack.textContent.toLowerCase().indexOf(term) !== -1;
+      stack.hidden = !on;
+      stack.classList.toggle("is-hidden", !on);
+      if (on) {
+        shown += 1;
+        if (!first) first = stack;
       }
-      var shown = 0;
-      document.querySelectorAll(".product-stack").forEach(function (stack) {
-        var on = !term || stack.textContent.toLowerCase().indexOf(term) !== -1;
-        stack.hidden = !on;
-        if (on) shown += 1;
-      });
-      document.querySelectorAll("[data-cat]").forEach(function (section) {
-        if (!term) return;
-        var stacks = section.querySelectorAll(".product-stack");
-        if (!stacks.length) {
-          section.hidden = section.textContent.toLowerCase().indexOf(term) === -1;
-          return;
-        }
-        var any = false;
-        stacks.forEach(function (stack) { if (!stack.hidden) any = true; });
-        section.hidden = !any;
-      });
-      if (!term) applyFilter();
-      if (productEmpty) productEmpty.hidden = !term || shown !== 0;
     });
+    document.querySelectorAll("[data-cat]").forEach(function (section) {
+      if (!term) {
+        section.classList.remove("is-hidden");
+        return;
+      }
+      var stacks = section.querySelectorAll(".product-stack");
+      if (!stacks.length) {
+        var textHit = section.textContent.toLowerCase().indexOf(term) !== -1;
+        section.hidden = !textHit;
+        section.classList.toggle("is-hidden", !textHit);
+        return;
+      }
+      var any = false;
+      stacks.forEach(function (stack) { if (!stack.hidden) any = true; });
+      section.hidden = !any;
+      section.classList.toggle("is-hidden", !any);
+    });
+    if (!term) applyFilter();
+    if (productEmpty) productEmpty.hidden = !term || shown !== 0;
+    if (term && first) first.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  if (productQuery) {
+    productQuery.addEventListener("input", filterProducts);
+    productQuery.addEventListener("keyup", filterProducts);
+    productQuery.addEventListener("search", filterProducts);
     var preset = new URLSearchParams(location.search).get("q");
     if (preset) {
       productQuery.value = preset;
-      productQuery.dispatchEvent(new Event("input"));
+      filterProducts();
     }
   }
 
