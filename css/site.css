@@ -191,21 +191,54 @@ h3 { font-size: 1.7rem; letter-spacing: 0; text-transform: none; font-family: va
   padding: 20px;
 }
 a.card { color: inherit; }
+a.guide-card { padding: 0; overflow: hidden; }
+a.guide-card img { width: 100%; height: 190px; object-fit: contain; background: #fff; display: block; border-bottom: 1px solid var(--line); }
+a.guide-card div { padding: 16px 18px 18px; }
 .site-nav a.btn,
 .site-nav a.btn:hover,
 .site-nav a.btn.is-active { color: var(--ink); }
 .card:hover, .brand-card:hover, .line:hover, .product:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(18, 19, 21, 0.06); }
 .product {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 18px;
   overflow: hidden;
   color: inherit;
 }
-.product-row { display: grid; gap: 16px; }
+.product-row { display: grid; gap: 16px; align-items: stretch; }
 .product img { width: 100%; height: 230px; object-fit: contain; background: #fff; }
+.product .card-gallery {
+  display: flex;
+  flex: 0 0 230px;
+  height: 230px;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  background: #fff;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink) transparent;
+}
+.product .card-gallery img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 230px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  border: 0;
+  border-radius: 0;
+}
+.product .card-gallery::-webkit-scrollbar { height: 8px; }
+.product .card-gallery::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 99px; }
 .product div { padding: 16px 18px 18px; }
+.post-shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
+.post-shots img { width: 100%; height: 220px; object-fit: contain; background: #fff; border-radius: 14px; border: 1px solid var(--line); }
+.video-frame { position: relative; width: min(100%, 320px); padding-top: 177%; margin: 16px 0; }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 18px; }
 .product h3 { margin-bottom: 8px; }
 .card h3, .step h3, .line h3 { margin-bottom: 8px; }
 .index-no {
@@ -298,6 +331,12 @@ button.bike {
 }
 button.bike strong { display: block; }
 button.bike span { display: block; margin-top: 4px; color: var(--muted); font-size: 0.88rem; }
+.bike-facts { margin-top: 16px; max-width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px 8px; }
+.bike-facts h3 { margin: 18px 0 8px; font-size: 1.35rem; }
+.bike-facts p { color: var(--muted); overflow-wrap: break-word; }
+.spec-list { display: grid; grid-template-columns: minmax(88px, 140px) minmax(0, 1fr); gap: 8px 16px; margin: 0 0 8px; }
+.spec-list dt { font-weight: 750; }
+.spec-list dd { margin: 0; min-width: 0; color: var(--muted); overflow-wrap: break-word; }
 button.bike.is-on { background: var(--ink); color: var(--ivory); border-color: var(--ink); }
 button.bike.is-on span { color: rgba(244, 240, 230, 0.72); }
 .lines { display: grid; gap: 12px; }

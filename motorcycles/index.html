@@ -81,10 +81,40 @@
       <div class="wrap">
         <p class="eyebrow">For this motorcycle</p>
         <h2 data-bike-title>Choose a motorcycle.</h2>
-        <p data-bike-prompt>Select a model in the groups below.</p>
-        <p data-rider-note hidden>Helmets and visors stay on the <a href="../accessories/#helmets">accessories page</a>. They fit the rider, not one motorcycle.</p>
+        <p data-bike-prompt>Select a model in the groups below, or search for it.</p>
+        <label class="sr-only" for="bike-q">Search motorcycles</label>
+        <input class="search" id="bike-q" type="search" placeholder="Search Wave, Smash, NMAX, Rusi…" autocomplete="off" style="margin: 14px 0 8px;">
+        <p data-bike-search-empty hidden>No motorcycle matches that search.</p>
+        <p data-rider-note hidden>Helmets, visors, gloves, balaclavas, and pants stay on the <a href="../accessories/">accessories page</a>. They fit the rider, not one motorcycle.</p>
+        <article class="bike-facts" data-bike-facts hidden>
+          <p class="eyebrow">About this motorcycle</p>
+          <p data-facts-about></p>
+          <h3>Specs</h3>
+          <dl class="spec-list" data-facts-specs></dl>
+          <h3>Price</h3>
+          <p data-facts-price></p>
+          <h3>More</h3>
+          <p data-facts-more></p>
+        </article>
         <p data-bike-empty hidden>No model-specific part is listed for this motorcycle yet. Every cleaning kit is still below.</p>
         <div class="product-row" style="margin-top: 18px;">
+          <div class="product-stack" data-fits="rusi-macho-tc150" hidden>
+            <a class="product" href="https://s.shopee.ph/3Vkc2vkpiq" target="_blank" rel="sponsored noopener noreferrer">
+              <div class="card-gallery">
+              <img src="../images/products/rusi-tc150-cover-1.jpg" alt="Blue, black, and red pairs of Rusi Macho TC150 battery side covers">
+              <img src="../images/products/rusi-tc150-cover-2.jpg" alt="Red and blue Rusi Macho TC150 side covers">
+              <img src="../images/products/rusi-tc150-cover-4.jpg" alt="Black Rusi Macho TC150 side cover pair">
+              <img src="../images/products/rusi-tc150-cover-3.jpg" alt="Blue and black Rusi Macho TC150 side covers">
+            </div>
+              <div>
+                <p class="eyebrow">Bike parts</p>
+                <h3>Macho TC150 side cover</h3>
+                <p class="muted">Battery side pair in blue, black, or red. Macho TC150 only.</p>
+                <p class="price">View product</p>
+              </div>
+            </a>
+            <a class="guide-link" href="../blog/rusi-macho-tc150-side-cover/">Read the fit guide</a>
+          </div>
           <div class="product-stack" data-fits="suzuki-smash-110 suzuki-smash-115" hidden>
             <a class="product" href="https://s.shopee.ph/1BMhArDtJi" target="_blank" rel="sponsored noopener noreferrer">
               <img src="../images/products/smash-handle-bolts.jpg" alt="Gold CNC front handle bolts fitted on a Suzuki Smash 110 or 115">
@@ -151,6 +181,7 @@
           <button type="button" class="bike" data-bike="kawasaki-ct" data-label="Kawasaki CT"><strong>Kawasaki CT</strong><span>See parts</span></button>
           <button type="button" class="bike" data-bike="motorstar" data-label="MotorStar"><strong>MotorStar</strong><span>See parts</span></button>
           <button type="button" class="bike" data-bike="rusi" data-label="Rusi"><strong>Rusi</strong><span>See parts</span></button>
+          <button type="button" class="bike" data-bike="rusi-macho-tc150" data-label="Rusi Macho TC150"><strong>Rusi Macho TC150</strong><span>See parts</span></button>
           <button type="button" class="bike" data-bike="skygo" data-label="Skygo"><strong>Skygo</strong><span>See parts</span></button>
         </div>
       </div>
@@ -316,6 +347,7 @@
       <p class="legal">Kurbada Motosupply is a catalog, not a store and not an authorized dealer. Product buttons open a third-party listing. Kurbada does not take payment, keep stock, or deliver the item, and may earn a fee if you buy through a link. Brand names are used only to say which motorcycle a part fits. Price, stock, and approval marks are on that listing.</p>
     </div>
   </footer>
-  <script src="../js/site.js?v=4"></script>
+  <script src="../js/bikes.js?v=1"></script>
+  <script src="../js/site.js?v=7"></script>
 </body>
 </html>

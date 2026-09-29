@@ -134,6 +134,35 @@
     if (riderNote) riderNote.hidden = false;
     if (bikeEmpty) bikeEmpty.hidden = parts !== 0;
     if (cleanBlock) cleanBlock.hidden = false;
+    var facts = document.querySelector("[data-bike-facts]");
+    var library = window.KURBADA_BIKES || {};
+    var note = library[id] || {
+      about: label + " is a name that covers more than one year. The badge alone is not enough to order a part.",
+      specs: [["Class", "Read the group on this page"], ["Engine", "Use the displacement on the engine case or the OR/CR."], ["Fitment", "Match the year before a bolt, tire, or panel."]],
+      price: "Kurbada does not sell this motorcycle and does not publish a price for it. A dealer quote changes with the year, the variant, and any promo.",
+      more: "Helmets and riding kit are on the accessories page. They fit the rider."
+    };
+    if (facts) {
+      facts.hidden = false;
+      var about = facts.querySelector("[data-facts-about]");
+      var price = facts.querySelector("[data-facts-price]");
+      var more = facts.querySelector("[data-facts-more]");
+      var list = facts.querySelector("[data-facts-specs]");
+      if (about) about.textContent = note.about;
+      if (price) price.textContent = note.price;
+      if (more) more.textContent = note.more;
+      if (list) {
+        list.textContent = "";
+        (note.specs || []).forEach(function (pair) {
+          var dt = document.createElement("dt");
+          var dd = document.createElement("dd");
+          dt.textContent = pair[0];
+          dd.textContent = pair[1];
+          list.appendChild(dt);
+          list.appendChild(dd);
+        });
+      }
+    }
     var panel = document.querySelector("#for-this-bike");
     if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -150,4 +179,57 @@
     var start = document.querySelector('[data-bike="' + location.hash.replace("#", "") + '"]');
     if (start) showBike(start.getAttribute("data-bike"), start.getAttribute("data-label"));
   }
+
+  var bikeQuery = document.querySelector("#bike-q");
+  var bikeSearchEmpty = document.querySelector("[data-bike-search-empty]");
+
+  function filterBikes() {
+    if (!bikeQuery) return;
+    var term = bikeQuery.value.trim().toLowerCase();
+    var shown = 0;
+    bikeButtons.forEach(function (button) {
+      var label = (button.getAttribute("data-label") || button.textContent || "").toLowerCase();
+      var on = !term || label.indexOf(term) !== -1;
+      button.hidden = !on;
+      button.classList.toggle("is-hidden", !on);
+      if (on) shown += 1;
+    });
+    document.querySelectorAll(".bike-grid").forEach(function (grid) {
+      var section = grid.closest("section");
+      if (!section) return;
+      var any = false;
+      grid.querySelectorAll("[data-bike]").forEach(function (button) {
+        if (!button.hidden) any = true;
+      });
+      var hide = !!term && !any;
+      section.hidden = hide;
+      section.classList.toggle("is-hidden", hide);
+    });
+    if (bikeSearchEmpty) bikeSearchEmpty.hidden = !term || shown !== 0;
+  }
+
+  if (bikeQuery) {
+    bikeQuery.addEventListener("input", filterBikes);
+    bikeQuery.addEventListener("keyup", filterBikes);
+    bikeQuery.addEventListener("search", filterBikes);
+  }
+
+  document.querySelectorAll(".card-gallery").forEach(function (gallery) {
+    var dragged = false;
+    gallery.addEventListener("pointerdown", function () { dragged = false; });
+    gallery.addEventListener("scroll", function () { dragged = true; });
+    gallery.addEventListener("click", function (event) {
+      if (!dragged) return;
+      event.preventDefault();
+      dragged = false;
+    });
+    gallery.addEventListener("wheel", function (event) {
+      if (gallery.scrollWidth <= gallery.clientWidth + 1) return;
+      var max = gallery.scrollWidth - gallery.clientWidth;
+      if (event.deltaY > 0 && gallery.scrollLeft >= max - 1) return;
+      if (event.deltaY < 0 && gallery.scrollLeft <= 0) return;
+      gallery.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }, { passive: false });
+  });
 })();
